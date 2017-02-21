@@ -1,0 +1,475 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Effective &amp; Efficient CSS Modules by Benjamin Solum</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+    <style>
+      @keyframes rainbow {
+        0%   { border-color: #ff0000; }
+        10%  { border-color: #ff8000; }
+        20%  { border-color: #ffff00; }
+        30%  { border-color: #80ff00; }
+        40%  { border-color: #00ff00; }
+        50%  { border-color: #00ff80; }
+        60%  { border-color: #00ffff; }
+        70%  { border-color: #0080ff; }
+        80%  { border-color: #0000ff; }
+        90%  { border-color: #8000ff; }
+        100% { border-color: #ff0080; }
+      }
+      #introslide {
+        width: 100%;
+        height: 100%;
+        top: 0!important;
+      }
+      #intro {
+        border: 1.8vmax solid transparent;
+        box-sizing: border-box;
+        margin: auto;
+        left: 50%;
+        position: absolute;
+        text-align: left;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        white-space: nowrap;
+        width: 70%;
+      }
+
+      #intro:after {
+        border: inherit;
+        border-color: currentColor;
+        box-sizing: inherit;
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+      }
+
+      #intro:before {
+        animation: rainbow 2s infinite;
+        border: inherit;
+        bottom: 0;
+        content: '';
+        filter: blur(calc(1.8vmax / 4));
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
+      #intro span {
+        font-size: 90%;
+        position: absolute;
+        left: .25em;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      #intro strong {
+        bottom: 1em;
+        display: block;
+        font-size: 25%;
+        font-weight: normal;
+        left: 0;
+        letter-spacing: .05em;
+        position: absolute;
+        text-align: center;
+        text-shadow: none;
+        text-transform: none;
+        width: 100%;
+      }
+      .classCodeTitle {
+        text-align: center!important;
+        text-shadow: none;
+      }
+      #specificity {
+        align-items: center;
+        display: flex;
+      }
+      #specificity > * {
+        flex: 1;
+      }
+      h4 {
+        text-align: left;
+      }
+
+      h4 + ul {
+        display: block;
+        margin-bottom: 1em!important;
+        text-align: left;
+        width: 100%;
+      }
+    </style>
+	</head>
+  <body>
+  	<div class="reveal">
+      <div class="slides">
+        <section id="introslide">
+          <h1 id="intro">
+            <span>Effective &amp; <br> Efficient CSS Modules</span>
+            <strong>soluml.github.io/Meetup_November_2016</strong>
+          </h1>
+        </section>
+        <section>
+          <section>
+            <h1><pre class="classCodeTitle"><code>whoami</code></pre></h1>
+            <pre><code class="html" style="white-space: pre-line;">&lt;head&gt;
+              &nbsp;&nbsp;&lt;title&gt;Senior Front-End Engineer at LifeWay&lt;/title&gt;
+              &nbsp;&nbsp;&lt;meta name="description" content="Work on the mywsb.com team building awesome web apps"&gt;
+              &nbsp;&nbsp;&lt;meta name="twitter:site" content="@soluml"&gt;
+              &nbsp;&nbsp;&lt;meta http-equiv="Content-Type" content="Human/Fargo,ND"&gt;
+              &nbsp;&nbsp;&lt;meta name="viewport" content="Work on Mac;Play on PC"&gt;
+              &nbsp;&nbsp;&lt;meta name="generator" content="God"&gt;
+              &nbsp;&nbsp;&lt;meta name="author" content="Parents"&gt;
+              &nbsp;&nbsp;&lt;meta name="copyright" content="Wife"&gt;
+              &nbsp;&nbsp;&lt;!--[if IE]&gt;
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;meta name="keywords" content="sad"&gt;
+              &nbsp;&nbsp;&lt;![endif]--&gt;
+              &nbsp;&nbsp;&lt;!--[if lt IE 9]&gt;
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;meta name="keywords" content="really sad"&gt;
+              &nbsp;&nbsp;&lt;![endif]--&gt;
+            &lt;/head&gt;</code></pre>
+            <aside class="notes">
+              <ul>
+                <li>Senior Front-End Engineer at LifeWay
+                <li>Live in Fargo, ND with wife and daughter
+              </ul>
+            </aside>
+          </section>
+        </section>
+
+        <section>
+          <h2>What are CSS Modules?</h2>
+          <blockquote>A CSS Module is a CSS file in which all class names and animation names are scoped locally by default</blockquote>
+          <p class="fragment">Generally speaking, "CSS module" refers to any CSS pattern where you're managing scope.</p>
+        </section>
+
+        <section>
+          <section>
+            <h2>How do I define effective &amp; efficient?</h2>
+            <ol>
+              <li class="fragment">Handles Specificity</li>
+              <li class="fragment">High Maintainability</li>
+              <li class="fragment">High Reusability</li>
+              <li class="fragment">Low Bloat / Small Size</li>
+            </ol>
+          </section>
+          <section>
+            <h3>What is <u>Specificity</u></h3>
+            <blockquote>Specificity is the means by which browsers decide which CSS property values are the most relevant to an element and, therefore, will be applied.</blockquote>
+            <hr>
+            <div id="specificity">
+              <div id="example" class="example">I'm an example! √</div>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <h2>Common Patterns</h2>
+        </section>
+
+        <section>
+          <section>
+            <h3>Nested</h3>
+            <pre><code class="scss">#nav {
+  background: #fff;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+
+    a {
+      display: block;
+      padding: 6px 12px;
+      text-decoration: none;
+
+      &:hover {
+        background: #efefef;
+      }
+    }
+  }
+}</code></pre>
+            <aside class="notes">
+              This pattern was highly popularized by the emergeance of preprocessors.<br>
+              Coming soon to a browser near you!
+            </aside>
+          </section>
+          <section>
+            <h3>Nested</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Highly maintainable and you get good specificity handling...</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>...the more you sacrifice reusability</li>
+                <li>
+                  ...and bloat your files:
+                  <a target="_blank" href="https://www.youtube.com/embed/iMq2rrEWKJA?autoplay=true"><img src="img/chocolate.gif" style="vertical-align: top; width: 300px; margin-left: 1em;"></a>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Naming Conventions (BEM)</h3>
+            <pre><code class="css">.button {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid #D5D5D5;
+  background-image: linear-gradient(#EEE, #DDD);
+  font: 700 13px/18px Helvetica, arial;
+}
+
+.button--state-success {
+  color: #FFF;
+  background: #569E3D linear-gradient(#79D858, #569E3D);
+  border-color: #4A993E;
+}
+
+.button--state-danger {
+  color: #900;
+}</code></pre>
+          </section>
+          <section>
+            <h3>Naming Convention: OOCSS, SMACSS, BEM</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Much less prone to bloat than the nested pattern.</li>
+              <li>Highly reusable in comparison to nested pattern.
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>... nothing in comparison to the nested pattern</li>
+                <li>...but other patterns are even better in certain areas</li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Inline (Radium)</h3>
+            <pre><code class="js">var styles = {
+  base: {
+    background: 'blue',
+    border: 0,
+    color: 'white',
+
+    ':hover': {
+      backgroundColor: 'red'
+    },
+    ':focus': {
+      backgroundColor: 'green'
+    },
+    ':active': {
+      backgroundColor: 'yellow'
+    },
+  },
+};</code></pre>
+          </section>
+          <section>
+            <h3>Inline (Radium)</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Practically immune to specificity issues!</li>
+              <li>Extremely high maintainability!</li>
+              <li>Completely reusable as a JS object!</li>
+              <li>No real bloat to speak of!</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>Unfortunately, SOOOOO many...</li>
+              </ul>
+            </div>
+            <aside class="notes">
+              <ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule">'@' rule support</a> is non-existant outside of media queries via matchMedia</li>
+                <li>Supports :hover, :focus, :active via JS hacks</li>
+                <li>No support for other pseudo <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">classes</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements">elements</a></li>
+              </ul>
+            </aside>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Aphrodite</h3>
+            <pre><code class="js">const styles = StyleSheet.create({
+  red: {
+      backgroundColor: 'red'
+  },
+
+  large: {
+      height: 20,
+      width: 20
+  },
+
+  marker: {
+      backgroundColor: 'blue'
+  }
+};</code></pre>
+          </section>
+          <section>
+            <h3>Aphrodite</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>An improvement over the original inline pattern in basically every way!</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>CSS in JS syntax is propietary so you have to wait for fixes/new features.</li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <h2>The Chosen One</h2>
+          <img src="img/chosen.gif">
+        </section>
+
+        <section>
+          <section>
+            <h3>Atomic</h3>
+            <blockquote>When it comes to CSS, I believe that the sacred principle of “separation of concerns” (SoC) has lead us to accept bloat, obsolescence, redundancy, poor caching and more. Now, I’m convinced that the only way to improve how we author style sheets is by moving away from this principle.</blockquote>
+            <small><a href="https://www.smashingmagazine.com/2013/10/challenging-css-best-practices-atomic-approach/">Challenging CSS Best Practices</a> - Thierry Koblentz</small>
+          </section>
+          <section>
+            <h3>Atomic</h3>
+            <pre><code class="html">&lt;div class="positionAbs displayFlex displayBlock600mw"&gt;
+  Lorem ipsum
+&lt;/div&gt;</code></pre>
+            <pre><code class="css">.positionAbs { position: absolute; }
+.displayFlex { display: flex; }
+
+@media (max-width: 600px) {
+  .displayBlock600mw { display: block; }
+}
+</code></pre>
+          </section>
+          <section>
+            <h3>Atomic</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Same specificity as BEM</li>
+              <li>Best in class reusability</li>
+              <li>Perfect maintainability. Write and forget.</li>
+              <li>ZERO. CODE. BLOAT.</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>Totally sucks to write :(</li>
+              </ul>
+            </div>
+          </section>
+          <section>
+            <h3>Atomic via Atomizer</h3>
+            <pre><code class="js">//...Atomizer Config...
+breakPoints: {
+  sm: '@media(min-width: 45em)',
+},
+custom: {
+  'brandColor': '#0280ae',
+  'columnWidth': '20px'
+}</code></pre>
+            <pre><code class="html">&lt;div class="Pos(a) Bgc(brandColor) W(columnWidth) H(90px)"&gt;
+  Lorem ipsum
+&lt;/div&gt;
+&lt;div class="BdB Bdc(#000.5) Mstart(columnWidth) W(50%) W(100%)--sm"&gt;
+  dolor sit amet
+&lt;/div&gt;</code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>The Atomic Pattern at LifeWay</h2>
+        </section>
+
+        <section>
+          <section>
+            <h3>Step 1: Webpack</h3>
+            <ul>
+              <li>The <a href="https://www.npmjs.com/package/webpack-atomizer-loader"><code>webpack-atomizer-loader</code></a> runs over our JSX files and creates <code>_atomic.scss</code></li>
+              <li><code>_atomic.scss</code> is a Sass partial that contains all of our Atomizer classes</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Step 2: Webpack</h3>
+            <p>The Sass loader processes app.scss which looks like this:</p>
+            <pre><code class="scss">@import 'css-variables.json'; //Share vars between Sass/Atomizer
+@import 'base';
+@import 'atomic';
+@import 'helpers';
+@import 'animations';</code></pre>
+          </section>
+          <section>
+            <h3>Step 3: Webpack</h3>
+            <p>The <a href="https://www.npmjs.com/package/postcss-loader"><code>postcss-loader</code></a> runs next and pushes our CSS through <a href="https://www.npmjs.com/package/autoprefixer">Autoprefixer</a> (to add prefixes) and <a href="https://www.npmjs.com/package/cssnano">CSSNano</a> to squeeze every last byte out of our CSS file.</p>
+          </section>
+          <section>
+            <h3>Step 4: Webpack</h3>
+            <p>Finally, our CSS runs through the <a href="https://www.npmjs.com/package/css-loader"><code>css-loader</code></a> using <code>localIdentName</code> to obfuscate our class names and pass them in to our JSX to be used.</p>
+          </section>
+        </section>
+
+        <section>
+          <h2>Thanks!</h2>
+        </section>
+      </div>
+  	</div>
+
+  	<script src="lib/js/head.min.js"></script>
+  	<script src="js/reveal.js"></script>
+  	<script>
+  		// More info https://github.com/hakimel/reveal.js#configuration
+  		Reveal.initialize({
+  			history: true,
+
+  			// More info https://github.com/hakimel/reveal.js#dependencies
+  			dependencies: [
+  				{ src: 'plugin/markdown/marked.js' },
+  				{ src: 'plugin/markdown/markdown.js' },
+  				{ src: 'plugin/notes/notes.js', async: true },
+  				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/reveal-css-snippet/css-snippet.js', callback: function() {
+            var el = document.getElementById('specificity');
+
+            el.insertBefore(RevealCSSSnippet({
+              //Default CSS I want automatically loaded in...
+              //Make background red and my specific slide's heading black
+              cssValue: "#example {\r\n  color: #fff;\r\n}\r\n\r\n.example {\r\n  color: #0f0;\r\n}"
+            }), el.querySelector('div'));
+          }},
+  			]
+  		});
+  	</script>
+  </body>
+</html>
