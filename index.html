@@ -138,39 +138,38 @@
         </section>
 
         <section>
-          <h2>What are CSS Modules?</h2>
-          <blockquote>A CSS Module is a CSS file in which all class names and animation names are scoped locally by default</blockquote>
-          <p class="fragment">Generally speaking, "CSS module" refers to any CSS pattern where you're managing scope.</p>
+          <h2>What do I mean when I say "CSS&nbsp;Architectures"?</h2>
+          <blockquote>The complex or carefully designed structure of something...</blockquote>
+          <p class="fragment"><small>...or basically CSS conventions and tools that promote them!</small></p>
+        </section>
+
+        <section>
+          <h2>What are Ben's qualifications for a good CSS Convention?</h2>
+          <ol>
+            <li class="fragment">Handles Specificity</li>
+            <li class="fragment">High Maintainability</li>
+            <li class="fragment">High Reusability</li>
+            <li class="fragment">Low Bloat / Small Size</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3><u>Specificity</u>?</h3>
+          <blockquote>Specificity is the means by which browsers decide which CSS property values are the most relevant to an element and, therefore, will be applied.</blockquote>
+          <hr>
+          <div id="specificity">
+            <div id="example" class="example">I'm an example! √</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Common Conventions</h2>
         </section>
 
         <section>
           <section>
-            <h2>How do I define effective &amp; efficient?</h2>
-            <ol>
-              <li class="fragment">Handles Specificity</li>
-              <li class="fragment">High Maintainability</li>
-              <li class="fragment">High Reusability</li>
-              <li class="fragment">Low Bloat / Small Size</li>
-            </ol>
-          </section>
-          <section>
-            <h3>What is <u>Specificity</u></h3>
-            <blockquote>Specificity is the means by which browsers decide which CSS property values are the most relevant to an element and, therefore, will be applied.</blockquote>
-            <hr>
-            <div id="specificity">
-              <div id="example" class="example">I'm an example! √</div>
-            </div>
-          </section>
-        </section>
-
-        <section>
-          <h2>Common Patterns</h2>
-        </section>
-
-        <section>
-          <section>
-            <h3>Nested</h3>
-            <pre><code class="scss">#nav {
+            <h3>Semantic or Nested Markup</h3>
+            <pre><code class="scss">nav {
   background: #fff;
 
   ul {
@@ -193,10 +192,13 @@
     }
   }
 }</code></pre>
-            <aside class="notes">
-              This pattern was highly popularized by the emergeance of preprocessors.<br>
-              Coming soon to a browser near you!
-            </aside>
+          </section>
+          <section>
+            <h4>Semantic or Nested Markup &mdash; Description:</h4>
+            <ul>
+              <li>This convention marries the markup to your stylesheet</li>
+              <li>Semantic variants typically prefer combinators, pseudo classes, and microformats over class/id selectors</li>
+            </ul>
           </section>
           <section>
             <h3>Nested</h3>
