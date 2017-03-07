@@ -140,7 +140,7 @@
         <section>
           <h2>What do I mean when I say "CSS&nbsp;Architectures"?</h2>
           <blockquote>The complex or carefully designed structure of something...</blockquote>
-          <p class="fragment"><small>...or basically CSS conventions and tools that promote them!</small></p>
+          <p class="fragment"><small>...or basically CSS conventions and tools that leverage them!</small></p>
         </section>
 
         <section>
@@ -485,7 +485,7 @@ custom: {
             <h4>Atomizer Breakdown:</h4>
             <blockquote>There are only two hard problems in Computer Science: cache invalidation and naming things — <em>Phil Karlton</em></blockquote>
             <ul>
-              <li>Atomizer works by giving you a tool to auto-generate CSS files based on pre-defined classes in your documents.</li>
+              <li>Atomizer works by giving you a build-tool that generates CSS files based on pre-defined classes in your documents.</li>
               <li>Has a config file that gives you the ability to reference variables, media queries, etc. in those classes</li>
             </ul>
           </section>
@@ -510,10 +510,50 @@ custom: {
         <section>
           <section>
             <h3>Atomic: Pre-Style</h3>
+            <pre><code class="scss">&lt;header
+  className={PreStyle`
+    //SASS. IN. YOUR. JS!!!!
+    @include overflow-text-boundry();
+
+    background-color: #f3f3f3;
+    color: #5e5e5e;
+    display: flex;
+    flex-shrink: 0;
+    height: $mobileHitBox;
+    line-height: $mobileHitBox;
+    padding-left: $gutter/2;
+    text-transform: capitalize;
+    width: 100%;
+  `}
+&gt;My Heading&lt;/header&gt;</code></pre>
+          </section>
+          <section>
+            <h4>Pre-Style Breakdown:</h4>
+            <ul>
+              <li>Pre-Style walks your files looking for code blocks denoted by "PreStyle" (or any other name-space specified in your config file). It then replaces those code blocks with the class names and writes the styles to the CSS file.</li>
+              <li>The code is then passed into PreStyle's internal Sass adapter (or any one you specify), is normalized, then broken into atomic classes with super tiny CSS safe class names.</li>
+            </ul>
+          </section>
+          <section>
+            <h4>Pre-Style Breakdown:</h4>
+            <img src="img/prestylecode.png">
+          </section>
+          <section>
+            <h3>Pre-Style</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Combines all of the benefits of Atomizer with the ease of authoring from Styled Components. Except you can specify the syntax used!</li>
+              <li>Normalizes all our CSS. <pre style="display:inline;"><code class="css" style="display:inline;">color: #fff;</code></pre> and <pre style="display:inline;"><code class="css" style="display:inline;">color: white;</code></pre> are now the same atomic class!</li>
+              <li>No JS templating language dependency! Provides a babel-plugin for ease-of-use within JS bundles.</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>Still in Alpha, but we're already using it at LifeWay and I'm quick at making fixes!</li>
+              </ul>
+            </div>
           </section>
         </section>
-
-
 
         <section>
           <h2>The Atomic Pattern at LifeWay</h2>
