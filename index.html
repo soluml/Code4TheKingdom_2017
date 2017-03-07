@@ -277,8 +277,9 @@
 
         <section>
           <section>
-            <h3>Inline (Radium)</h3>
-            <pre><code class="js">var styles = {
+            <h3>Inline</h3>
+            <pre><code class="js">//Radium
+var styles = {
   base: {
     background: 'blue',
     border: 0,
@@ -297,18 +298,29 @@
 };</code></pre>
           </section>
           <section>
-            <h3>Inline (Radium)</h3>
+            <h4>Inline Breakdown:</h4>
+            <ul>
+              <li>Inline conventions make use of the style attribute on HTML elements: <pre style="display:inline;"><code class="html" style="display:inline;">&lt;div style="color:blue;"&gt;</code></pre></li>
+              <li>Only the CSS neccessary to style the element is used</li>
+              <li>This convention was spurred on by SPA frameworks, most notably React</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Inline</h3>
             <h4>Pros:</h4>
             <ul>
-              <li>Practically immune to specificity issues!</li>
-              <li>Extremely high maintainability!</li>
-              <li>Completely reusable as a JS object!</li>
+              <li>Essentially immune to specificity issues</li>
+              <li>Extremely high maintainability! Easy to update AND refactor!</li>
+              <li>With tools like Radium, styles are easily reusable as a JS object!</li>
               <li>No real bloat to speak of!</li>
             </ul>
             <div class="fragment">
               <h4>Cons:</h4>
               <ul>
-                <li>Unfortunately, SOOOOO many...</li>
+                <li>'@' rule support is non-existant</li>
+                <li>Pseudo class support is non-existant</li>
+                <li>Pseudo element support is non-existant</li>
+                <li>No style caching; styles live in your document</li>
               </ul>
             </div>
             <aside class="notes">
@@ -323,7 +335,7 @@
 
         <section>
           <section>
-            <h3>Aphrodite</h3>
+            <h3>Inline: Aphrodite</h3>
             <pre><code class="js">const styles = StyleSheet.create({
   red: {
       backgroundColor: 'red'
@@ -340,6 +352,14 @@
 };</code></pre>
           </section>
           <section>
+            <h4>Aphrodite Breakdown:</h4>
+            <ul>
+              <li>"Inline Styles that work"</li>
+              <li>Requires a JS templating framework (usually React) for our markup</li>
+              <li>Authoring is done with a JS syntax, but our actual CSS markup is handled by Aphrodite and rendered to a &lt;style&gt; block in the &lt;head&gt;</li>
+            </ul>
+          </section>
+          <section>
             <h3>Aphrodite</h3>
             <h4>Pros:</h4>
             <ul>
@@ -348,7 +368,47 @@
             <div class="fragment">
               <h4>Cons:</h4>
               <ul>
-                <li>CSS in JS syntax is propietary so you have to wait for fixes/new features.</li>
+                <li>If you forego server-side rendering, there will be a noticeable delay in page load</li>
+                <li>Its CSS in JS syntax is propietary so you have to wait for fixes/new supported CSS features</li>
+                <li>No style caching; styles live in your document</li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Inline: Styled Components</h3>
+            <pre><code class="js">const Button = styled.button`
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+
+  background: ${props => props.primary && 'palevioletred'};
+  color: ${props => props.primary ? 'white' : 'palevioletred'};
+`;</code></pre>
+          </section>
+          <section>
+            <h4>Styled Components Breakdown:</h4>
+            <ul>
+              <li>Ultimately, works very similarly to Aphorodite under the covers</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Styled Components</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Gone is the proprietary syntax of Aphrodite. Write CSS as CSS!</li>
+              <li>With pre-processor like VARIABLES!!</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>Currently server-side rendering doesn't really work</li>
+                <li>Larger than aphrodite... and all that CSS syntax processor code lives in your app bundle</li>
+                <li>No style caching; styles live in your document</li>
               </ul>
             </div>
           </section>
@@ -379,23 +439,33 @@
 </code></pre>
           </section>
           <section>
+            <h4>Atomic Breakdown:</h4>
+            <ul>
+              <li>Functional Programming meets CSS. All CSS props become individual, immutable classes.</li>
+              <li>To style, just add the classes you need</li>
+              <li>Similar to the inline style of authoring</li>
+            </ul>
+          </section>
+          <section>
             <h3>Atomic</h3>
             <h4>Pros:</h4>
             <ul>
-              <li>Same specificity as BEM</li>
-              <li>Best in class reusability</li>
-              <li>Perfect maintainability. Write and forget.</li>
+              <li>Extremely high specificty management. Everything's just a class to be used.</li>
+              <li>Best in class reusability! Entire stylesheets can be shared across a company!</li>
+              <li>Perfect maintainability.</li>
               <li>ZERO. CODE. BLOAT.</li>
             </ul>
             <div class="fragment">
               <h4>Cons:</h4>
               <ul>
-                <li>Totally sucks to write :(</li>
+                <li>Authoring kinda blows :(</li>
               </ul>
             </div>
           </section>
+        </section>
+        <section>
           <section>
-            <h3>Atomic via Atomizer</h3>
+            <h3>Atomic: Atomizer</h3>
             <pre><code class="js">//...Atomizer Config...
 breakPoints: {
   sm: '@media(min-width: 45em)',
@@ -411,7 +481,39 @@ custom: {
   dolor sit amet
 &lt;/div&gt;</code></pre>
           </section>
+          <section>
+            <h4>Atomizer Breakdown:</h4>
+            <blockquote>There are only two hard problems in Computer Science: cache invalidation and naming things — <em>Phil Karlton</em></blockquote>
+            <ul>
+              <li>Atomizer works by giving you a tool to auto-generate CSS files based on pre-defined classes in your documents.</li>
+              <li>Has a config file that gives you the ability to reference variables, media queries, etc. in those classes</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Atomizer</h3>
+            <h4>Pros:</h4>
+            <ul>
+              <li>Easily extend Atomizer's grammar with the config file or your own Atomic CSS classes</li>
+              <li>Cacheable, Maintainable, Reusable, and TINY; Atomizer gives us almost everything we could want!</li>
+              <li>No JS templating language dependency!</li>
+            </ul>
+            <div class="fragment">
+              <h4>Cons:</h4>
+              <ul>
+                <li>Authoring isn't as nice as Styled Components :(</li>
+                <li>Atomizer doesn't normalize values meaning C(#fff) and C(white) are treated as separate classes</li>
+              </ul>
+            </div>
+          </section>
         </section>
+
+        <section>
+          <section>
+            <h3>Atomic: Pre-Style</h3>
+          </section>
+        </section>
+
+
 
         <section>
           <h2>The Atomic Pattern at LifeWay</h2>
