@@ -147,7 +147,7 @@
           <h2>What are Ben's qualifications for a good CSS Convention?</h2>
           <ol>
             <li class="fragment">Handles Specificity</li>
-            <li class="fragment">High Maintainability</li>
+            <li class="fragment">High Maintainability (Updating/Refactoring)</li>
             <li class="fragment">High Reusability</li>
             <li class="fragment">Low Bloat / Small Size</li>
           </ol>
@@ -194,7 +194,7 @@
 }</code></pre>
           </section>
           <section>
-            <h4>Semantic or Nested Markup &mdash; Description:</h4>
+            <h4>"Semantic" or Nested Markup &mdash; Breakdown:</h4>
             <ul>
               <li>This convention marries the markup to your stylesheet</li>
               <li>Semantic variants typically prefer combinators, pseudo classes, and microformats over class/id selectors</li>
@@ -204,14 +204,17 @@
             <h3>Nested</h3>
             <h4>Pros:</h4>
             <ul>
-              <li>Highly maintainable and you get good specificity handling...</li>
+              <li>Easy to update</li>
+              <li>The high specificity ensures you'll <em>*probably*</em> be fine</li>
+              <li>*The* choice for Web Components / Shadow DOM</li>
             </ul>
             <div class="fragment">
               <h4>Cons:</h4>
               <ul>
-                <li>...the more you sacrifice reusability</li>
+                <li>Highly difficult to refactor</li>
+                <li>Zero reusability across markup structures; scales quite poorly!</li>
                 <li>
-                  ...and bloat your files:
+                  ...and your CSS files get a little bloated:
                   <a target="_blank" href="https://www.youtube.com/embed/iMq2rrEWKJA?autoplay=true"><img src="img/chocolate.gif" style="vertical-align: top; width: 300px; margin-left: 1em;"></a>
                 </li>
               </ul>
@@ -221,13 +224,18 @@
 
         <section>
           <section>
-            <h3>Naming Conventions (BEM)</h3>
-            <pre><code class="css">.button {
+            <h3>Naming (BEM, SMACSS, etc.)</h3>
+            <pre><code class="css">//BEM Methodology
+.button {
   display: inline-block;
   padding: 7px 12px;
   border: 1px solid #D5D5D5;
   background-image: linear-gradient(#EEE, #DDD);
   font: 700 13px/18px Helvetica, arial;
+}
+
+.button__label {
+  text-transform: uppercase;
 }
 
 .button--state-success {
@@ -241,17 +249,27 @@
 }</code></pre>
           </section>
           <section>
-            <h3>Naming Convention: OOCSS, SMACSS, BEM</h3>
+            <h4>Naming Convention Breakdown:</h4>
+            <ul>
+              <li>These types of conventions enforce strict authoring guidelines to maintain specificity, typically by exclusively authoring your styles with class selectors and pseudo class selectors (i.e. - <pre style="display:inline;"><code class="css" style="display:inline;">.button:hover</code></pre>)</li>
+              <li>The classes have no semantic value and no opinions on the markup</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Naming (BEM, SMACSS, etc.)</h3>
             <h4>Pros:</h4>
             <ul>
-              <li>Much less prone to bloat than the nested pattern.</li>
-              <li>Highly reusable in comparison to nested pattern.
+              <li>Still easy to update!</li>
+              <li>Strict adherence typically results in perfect specificity handling<small>&dagger;</small></li>
+              <li>Much higher reusability in comparison to the nested pattern.</li>
             </ul>
             <div class="fragment">
               <h4>Cons:</h4>
               <ul>
-                <li>... nothing in comparison to the nested pattern</li>
-                <li>...but other patterns are even better in certain areas</li>
+                <li>Still difficult to refactor!</li>
+                <li><small>&dagger;</small>You may still need to be mindful of the cascade</li>
+                <li>Less bloaty initially than nested pattern; much easier to bloat during refactor</li>
+                <li>Ultimately outclassed by other conventions/tooling</li>
               </ul>
             </div>
           </section>
