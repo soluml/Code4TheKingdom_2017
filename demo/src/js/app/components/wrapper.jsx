@@ -41,6 +41,7 @@ const Main = class extends React.Component {
           text-transform: uppercase;
           top: 50%;
           transform: translate(-50%, -50%);
+          width: 90%;
         `
       },
       div: ind => ({
@@ -48,12 +49,12 @@ const Main = class extends React.Component {
         style: { animationDelay: `${ind * lineDelay}s` },
         className: styled`
           animation: 1s ease-in-out 0s jumpyWords forwards;
+          clear: both;
           float: left;
           left: 50%;
           opacity: 0;
           position: relative;
           transform: translateX(-50%) rotate(-10deg);
-          white-space: nowrap;
         `
       }),
       span: (pind, ind) => ({
