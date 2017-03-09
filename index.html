@@ -561,28 +561,30 @@ custom: {
 
         <section>
           <section>
-            <h3>Step 1: Webpack</h3>
+            <h3>Step 1: The App.scss File</h3>
+            <p>We have a single file called app.css that looks something like this:</p>
+            <pre><code class="scss">//Sass variables/functions/mixins
+@import 'vars';
+//Customized "normalize.css" for LifeWay
+@import 'base';
+//Animations to be referenced from our Atomic classes
+@import 'animations';
+//Generated everytime Pre-Style runs; contains our Atomic classes
+@import 'prestyle';</code></pre>
+          </section>
+          <section>
+            <h3>Step 2: Webpack + Babel</h3>
             <ul>
-              <li>The <a href="https://www.npmjs.com/package/webpack-atomizer-loader"><code>webpack-atomizer-loader</code></a> runs over our JSX files and creates <code>_atomic.scss</code></li>
-              <li><code>_atomic.scss</code> is a Sass partial that contains all of our Atomizer classes</li>
+              <li>The <a href="https://www.npmjs.com/package/babel-plugin-pre-style"><code>babel-plugin-pre-style</code></a> runs over our JSX files and creates the <code>_prestyle.scss</code> Sass partial</li>
             </ul>
           </section>
           <section>
-            <h3>Step 2: Webpack</h3>
-            <p>The Sass loader processes app.scss which looks like this:</p>
-            <pre><code class="scss">@import 'css-variables.json'; //Share vars between Sass/Atomizer
-@import 'base';
-@import 'atomic';
-@import 'helpers';
-@import 'animations';</code></pre>
+            <h3>Step 3: Webpack Loaders</h3>
+            <p>The <a href="https://www.npmjs.com/package/sass-loader"><code>sass-loader</code></a> processes app.scss, giving us vanilla CSS. <a href="https://www.npmjs.com/package/postcss-loader"><code>postcss-loader</code></a> runs next and pushes our CSS through <a href="https://www.npmjs.com/package/autoprefixer">Autoprefixer</a> (to add prefixes) and <a href="https://www.npmjs.com/package/cssnano">CSSNano</a> to squeeze every last byte out of our CSS file.</p>
           </section>
           <section>
-            <h3>Step 3: Webpack</h3>
-            <p>The <a href="https://www.npmjs.com/package/postcss-loader"><code>postcss-loader</code></a> runs next and pushes our CSS through <a href="https://www.npmjs.com/package/autoprefixer">Autoprefixer</a> (to add prefixes) and <a href="https://www.npmjs.com/package/cssnano">CSSNano</a> to squeeze every last byte out of our CSS file.</p>
-          </section>
-          <section>
-            <h3>Step 4: Webpack</h3>
-            <p>Finally, our CSS runs through the <a href="https://www.npmjs.com/package/css-loader"><code>css-loader</code></a> using <code>localIdentName</code> to obfuscate our class names and pass them in to our JSX to be used.</p>
+            <h3>Step 4: More Webpack Loaders</h3>
+            <p>Finally, our CSS is ready for the browser. Webpack runs it through the <a href="https://www.npmjs.com/package/css-loader"><code>css-loader</code></a> and <a href="https://www.npmjs.com/package/style-loader"><code>style-loader</code></a>. In production, the CSS is put into a CSS file but in development it's inlined so we can leverage Hot Module Reloading.</p>
           </section>
         </section>
 
