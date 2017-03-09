@@ -87,7 +87,7 @@ const config = {
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        loader: `babel-loader?babelrc=false&extends=${path.join(__dirname, '/.babelrc')}`,
         exclude: /(node_modules|\/js\/vendor)/,
       },
       {
