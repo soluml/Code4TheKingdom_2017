@@ -9,6 +9,7 @@ const Main = class extends React.Component {
           background-size: cover;
           bottom: 0;
           left: 0;
+          overflow: hidden;
           position: absolute;
           right: 0;
           top: 0;
@@ -27,25 +28,41 @@ const Main = class extends React.Component {
       },
       h1: {
         className: styled`
+          color: #fff;
+          font-size: 3em;
           left: 50%;
+          letter-spacing: 2px;
+          margin: 0;
           position: absolute;
           text-align: center;
+          text-transform: uppercase;
           top: 50%;
           transform: translate(-50%, -50%);
         `
       },
+      div: {
+        className: ''
+      },
+      span: {
+        className: ''
+      },
     };
 
-    const bibleVerse = ['Now', 'the', 'earth', 'was', 'formless', 'and', 'empty…', 'Genesis 1:2'];
+    const bibleVerse = [['Now', 'the', 'earth'], ['was', 'formless'], ['and', 'empty…'], ['Genesis 1:2']];
 
     return (
       <main {...attrs.main}>
         <canvas {...attrs.canvas} />
         <h1 {...attrs.h1}>
           {
-            bibleVerse.map(word => <span key={word}>
-              {word}
-            </span>)
+            bibleVerse
+              .map((line, i) => <div key={i} {...attrs.div}>
+                {
+                  line.map(word => <span key={word} {...attrs.span}>
+                    {word}
+                  </span>)
+                }
+              </div>)
           }
         </h1>
       </main>
