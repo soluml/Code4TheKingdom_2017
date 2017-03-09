@@ -27,10 +27,7 @@ const config = {
       'react-dom',
       'redux',
       'react-redux',
-      'immutable',
-      './js/vendor/modernizr-custom.js',
     ],
-    head: ['./js/head/index.js'],
   },
 
   resolve: {
