@@ -5,8 +5,16 @@ const Main = class extends React.Component {
     const attrs = {
       main: {
         className: styled`
-          color: red;
-          font-weight: bold;
+          bottom: 0;
+          left: 0;
+          position: absolute;
+          right: 0;
+          top: 0;
+        `
+      },
+      h1: {
+        className: styled`
+          text-align: center;
         `
       }
     };
@@ -14,7 +22,7 @@ const Main = class extends React.Component {
     return (
       <div>
         <main {...attrs.main}>
-          Main Content Here!
+          <h1 {...attrs.h1}>Welcome to my demo!</h1>
         </main>
       </div>
     );
