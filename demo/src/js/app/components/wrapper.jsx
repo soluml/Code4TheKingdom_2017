@@ -2,6 +2,8 @@ import React from 'react';
 
 const Main = class extends React.Component {
   render() {
+    const lineDelay = 0.5; //sec.
+    const wordDelay = 0.115; //sec.
     const attrs = {
       main: {
         className: styled`
@@ -41,23 +43,31 @@ const Main = class extends React.Component {
           transform: translate(-50%, -50%);
         `
       },
-      div: {
+      div: ind => ({
+        key: ind,
+        style: { animationDelay: `${ind * lineDelay}s` },
         className: styled`
+          animation: 1s ease-in-out 0s jumpyWords forwards;
           float: left;
           left: 50%;
+          opacity: 0;
           position: relative;
           transform: translateX(-50%) rotate(-10deg);
           white-space: nowrap;
         `
-      },
-      span: {
+      }),
+      span: (pind, ind) => ({
+        key: ind,
+        style: { animationDelay: `${(pind * lineDelay) + (ind * wordDelay)}s` },
         className: styled`
           $shadow: #533d4a;
 
+          animation: 1s ease-in-out 0s jumpyWords forwards;
           display: block;
           float: left;
           min-height: 10px;
           min-width: 10px;
+          opacity: 0;
           position: relative;
           text-shadow: $shadow 1px 1px, $shadow 2px 2px, $shadow 3px 3px, $shadow 4px 4px, $shadow 5px 5px, $shadow 6px 6px;
           transform: skew(-10deg);
@@ -67,7 +77,7 @@ const Main = class extends React.Component {
             white-space: pre;
           }
         `
-      },
+      }),
     };
 
     const bibleVerse = [['Now', 'the', 'earth'], ['was', 'formless'], ['and', 'empty…'], ['— Genesis 1:2']];
@@ -78,11 +88,9 @@ const Main = class extends React.Component {
         <h1 {...attrs.h1}>
           {
             bibleVerse
-              .map((line, i) => <div key={i} {...attrs.div}>
+              .map((line, i) => <div {...attrs.div(i)}>
                 {
-                  line.map(word => <span key={word} {...attrs.span}>
-                    {word}
-                  </span>)
+                  line.map((word, j) => <span {...attrs.span(i, j)}>{word}</span>)
                 }
               </div>)
           }
